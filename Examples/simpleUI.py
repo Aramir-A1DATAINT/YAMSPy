@@ -52,10 +52,10 @@ from itertools import cycle
 from yamspy import MSPy
 
 # Max periods for:
-CTRL_LOOP_TIME = 1/200
-SLOW_MSGS_LOOP_TIME = 1/10 # these messages take a lot of time slowing down the loop...
+CTRL_LOOP_TIME = 1/40
+SLOW_MSGS_LOOP_TIME = 1/5 # these messages take a lot of time slowing down the loop...
 
-NO_OF_CYCLES_AVERAGE_GUI_TIME = 10
+NO_OF_CYCLES_AVERAGE_GUI_TIME = 3
 
 
 #
@@ -69,7 +69,7 @@ NO_OF_CYCLES_AVERAGE_GUI_TIME = 10
 # https://pyserial.readthedocs.io/en/latest/shortintro.html
 #
 #
-SERIAL_PORT = "/dev/serial0"
+SERIAL_PORT = "/dev/ttyACM0"
 
 def run_curses(external_function):
     result=1
@@ -106,7 +106,7 @@ def keyboard_controller(screen):
     CMDS = {
             'roll':     1500,
             'pitch':    1500,
-            'throttle': 900,
+            'throttle': 1020,
             'yaw':      1500,
             'aux1':     1000,
             'aux2':     1000
@@ -230,11 +230,11 @@ def keyboard_controller(screen):
                     CMDS['yaw'] = CMDS['yaw'] - 10 if CMDS['yaw'] - 10 >= 1000 else CMDS['yaw']
                     cursor_msg = 'Left Key - yaw(+):{}'.format(CMDS['yaw'])
 
-                elif char == ord('a') or char == ord('A'):
+                elif char == ord('d') or char == ord('D'):
                     CMDS['roll'] = CMDS['roll'] + 10 if CMDS['roll'] + 10 <= 2000 else CMDS['roll']
                     cursor_msg = 'Right Key - roll(-):{}'.format(CMDS['roll'])
 
-                elif char == ord('d') or char == ord('D'):
+                elif char == ord('a') or char == ord('A'):
                     CMDS['roll'] = CMDS['roll'] - 10 if CMDS['roll'] - 10 >= 1000 else CMDS['roll']
                     cursor_msg = 'Left Key - roll(+):{}'.format(CMDS['roll'])
 
