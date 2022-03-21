@@ -52,8 +52,8 @@ from itertools import cycle
 from yamspy import MSPy
 
 # Max periods for:
-CTRL_LOOP_TIME = 1/100
-SLOW_MSGS_LOOP_TIME = 1/5 # these messages take a lot of time slowing down the loop...
+CTRL_LOOP_TIME = 1/200
+SLOW_MSGS_LOOP_TIME = 1/10 # these messages take a lot of time slowing down the loop...
 
 NO_OF_CYCLES_AVERAGE_GUI_TIME = 10
 
@@ -181,10 +181,10 @@ def keyboard_controller(screen):
                 #
                 # KEYS (NO DELAYS)
                 #
-                if char == ord('q') or char == ord('Q'):
+                if char == ord('o') or char == ord('O'):
                     break
 
-                elif char == ord('d') or char == ord('D'):
+                elif char == ord('1'):
                     cursor_msg = 'Sending Disarm command...'
                     CMDS['aux1'] = 1000
 
@@ -195,7 +195,7 @@ def keyboard_controller(screen):
                     time.sleep(0.5)
                     break
 
-                elif char == ord('a') or char == ord('A'):
+                elif char == ord('0') :
                     cursor_msg = 'Sending Arm command...'
                     CMDS['aux1'] = 1800
 
@@ -218,15 +218,23 @@ def keyboard_controller(screen):
                     CMDS['throttle'] = CMDS['throttle'] + 10 if CMDS['throttle'] + 10 <= 2000 else CMDS['throttle']
                     cursor_msg = 'W Key - throttle(+):{}'.format(CMDS['throttle'])
 
-                elif char == ord('e') or char == ord('E'):
+                elif char == ord('s') or char == ord('S'):
                     CMDS['throttle'] = CMDS['throttle'] - 10 if CMDS['throttle'] - 10 >= 1000 else CMDS['throttle']
                     cursor_msg = 'E Key - throttle(-):{}'.format(CMDS['throttle'])
-
+                
                 elif char == curses.KEY_RIGHT:
+                    CMDS['yaw'] = CMDS['yaw'] + 10 if CMDS['yaw'] + 10 <= 2000 else CMDS['yaw']
+                    cursor_msg = 'Right Key - yaw(-):{}'.format(CMDS['yaw'])
+
+                elif char == curses.KEY_LEFT:
+                    CMDS['yaw'] = CMDS['yaw'] - 10 if CMDS['yaw'] - 10 >= 1000 else CMDS['yaw']
+                    cursor_msg = 'Left Key - yaw(+):{}'.format(CMDS['yaw'])
+
+                elif char == ord('a') or char == ord('A'):
                     CMDS['roll'] = CMDS['roll'] + 10 if CMDS['roll'] + 10 <= 2000 else CMDS['roll']
                     cursor_msg = 'Right Key - roll(-):{}'.format(CMDS['roll'])
 
-                elif char == curses.KEY_LEFT:
+                elif char == ord('d') or char == ord('D'):
                     CMDS['roll'] = CMDS['roll'] - 10 if CMDS['roll'] - 10 >= 1000 else CMDS['roll']
                     cursor_msg = 'Left Key - roll(+):{}'.format(CMDS['roll'])
 
