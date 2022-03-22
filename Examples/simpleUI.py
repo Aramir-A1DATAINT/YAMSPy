@@ -91,7 +91,7 @@ def run_curses(external_function):
         screen.keypad(True)
 
         screen.addstr(1, 0, "Press 'o' to quit, 'r' to reboot, 'm' to change mode, '0' to arm, '1' to disarm and arrow keys to control,\
-        'z': pitch reset, 'x': roll reset, 'c': yaw reset ", curses.A_BOLD)
+        'z': pitch reset, 'x': roll reset, 'c': yaw reset, 'v': throttle reset", curses.A_BOLD)
         
         result = external_function(screen)
 
@@ -262,6 +262,10 @@ def keyboard_controller(screen):
                 elif char == ord('c') or char == ord('C'):
                     CMDS['yaw'] = 1500
                     cursor_msg = 'yaw is reset'
+
+                elif char == ord('v') or char == ord('V'):
+                    CMDS['throttle'] = 1100
+                    cursor_msg = 'throttle is reset'
                 #
                 # IMPORTANT MESSAGES (CTRL_LOOP_TIME based)
                 #
