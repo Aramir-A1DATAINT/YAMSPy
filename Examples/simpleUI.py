@@ -90,7 +90,8 @@ def run_curses(external_function):
         # map arrow keys to special values
         screen.keypad(True)
 
-        screen.addstr(1, 0, "Press 'q' to quit, 'r' to reboot, 'm' to change mode, 'a' to arm, 'd' to disarm and arrow keys to control", curses.A_BOLD)
+        screen.addstr(1, 0, "Press 'o' to quit, 'r' to reboot, 'm' to change mode, '0' to arm, '1' to disarm and arrow keys to control,\
+        'z': pitch reset, 'x': roll reset, 'c': yaw reset ", curses.A_BOLD)
         
         result = external_function(screen)
 
@@ -245,7 +246,22 @@ def keyboard_controller(screen):
                 elif char == curses.KEY_DOWN:
                     CMDS['pitch'] = CMDS['pitch'] - 10 if CMDS['pitch'] - 10 >= 1000 else CMDS['pitch']
                     cursor_msg = 'Down Key - pitch(-):{}'.format(CMDS['pitch'])
+                
+                elif char == curses.KEY_DOWN:
+                    CMDS['pitch'] = CMDS['pitch'] - 10 if CMDS['pitch'] - 10 >= 1000 else CMDS['pitch']
+                    cursor_msg = 'Down Key - pitch(-):{}'.format(CMDS['pitch'])
 
+                elif char == ord('z') or char == ord('Z'):
+                    CMDS['pitch'] = 1500
+                    cursor_msg = 'pitch is reset'
+
+                elif char == ord('x') or char == ord('X'):
+                    CMDS['roll'] = 1500
+                    cursor_msg = 'roll is reset'
+
+                elif char == ord('c') or char == ord('C'):
+                    CMDS['yaw'] = 1500
+                    cursor_msg = 'yaw is reset'
                 #
                 # IMPORTANT MESSAGES (CTRL_LOOP_TIME based)
                 #
