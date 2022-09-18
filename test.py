@@ -10,12 +10,11 @@ import sys
 import time
 
 # Max periods for:
-CTRL_LOOP_TIME = 1/150
-
+CTRL_LOOP_TIME = 1/50
 
 NO_OF_CYCLES_AVERAGE_GUI_TIME = 3
 
-SERIAL_PORT = "/dev/tty.usbmodem2072355459311"
+SERIAL_PORT = "/dev/tty.usbserial-A50285BI"
 # def joystick():
 #     pygame.display.init()
 #     js = pygame.joystick.Joystick(0)
@@ -56,8 +55,10 @@ def keyboard_controller(js):
                 
                 if action == 'yaw':
                     CMDS[action] = 1500 + int(js.get_axis(i)*500)
-                    CMDS['aux4'] += int(js.get_axis(i)*10)
-                
+                    if js.get_axis(i) >= 0.01:
+                        CMDS['aux4'] += float(js.get_axis(i))
+                    if js.get_axis(i) <= -0.01:
+                        CMDS['aux4'] += float(js.get_axis(i))
                 if action == "aux4":
                     pass
 
@@ -72,8 +73,11 @@ def keyboard_controller(js):
             
                 if action == 'aux2':
                     CMDS[action] = 1500 + int(js.get_axis(i)*500)
+                
+                if action == 'aux3':
+                    CMDS[action] = 1500 + int(js.get_axis(i)*500)
 
-                if CMDS['aux3'] == 2000:
+                if CMDS['aux3'] >= 1900:
                     CMDS['aux4'] = 1500
                 # 요 코드 삭제 reset 버튼은 aux4 로 실행
                 # 요 코드는 계속 누적 
@@ -82,8 +86,7 @@ def keyboard_controller(js):
                     last_loop_time = time.time()
                     # Send the RC channel values to the FC
                     board.send_RAW_RC([CMDS[ki] for ki in CMDS_ORDER])
-                print(CMDS['yaw'])
-                print(CMDS['aux4'])
+
 if __name__ == "__main__":
     pygame.display.init()
     pygame.joystick.init()
